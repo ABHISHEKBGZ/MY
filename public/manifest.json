@@ -1,0 +1,17 @@
+{
+  "name": "AS-OS Sovereign Ecosystem",
+  "short_name": "AS-OS",
+  "description": "High-Fidelity AI Architect Portfolio & Private OS Dashboard.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#050505",
+  "theme_color": "#0ea5e9",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
