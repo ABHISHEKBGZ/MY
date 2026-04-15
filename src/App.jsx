@@ -4,6 +4,11 @@ import PublicPortfolio from './pages/PublicPortfolio';
 import SovereignDashboard from './pages/SovereignDashboard';
 import ProjectDetails from './pages/ProjectDetails';
 import ArticlePage from './pages/ArticlePage';
+import Vault from './pages/Vault';
+import About from './pages/About';
+import Mentorship from './pages/Mentorship';
+import PortfolioGallery from './pages/PortfolioGallery';
+import Snippets from './pages/Snippets';
 import Admin from './Admin';
 
 function App() {
@@ -19,11 +24,15 @@ function App() {
 
   return (
     <Routes>
-      <Route path="/" element={<PublicPortfolio onAccessOS={() => navigate('/os')} theme={theme} toggleTheme={toggleTheme} />} />
+      <Route path="/" element={<PublicPortfolio theme={theme} toggleTheme={toggleTheme} />} />
+      <Route path="/portfolio" element={<PortfolioGallery theme={theme} toggleTheme={toggleTheme} />} />
       <Route path="/project/:id" element={<ProjectDetails theme={theme} toggleTheme={toggleTheme} />} />
+      <Route path="/mentorship" element={<Mentorship theme={theme} toggleTheme={toggleTheme} />} />
+      <Route path="/snippets" element={<Snippets theme={theme} toggleTheme={toggleTheme} />} />
       <Route path="/blog/:id" element={<ArticlePage theme={theme} toggleTheme={toggleTheme} />} />
-      <Route path="/os" element={<SovereignDashboard onBack={() => navigate('/')} theme={theme} toggleTheme={toggleTheme} />} />
-      <Route path="/admin" element={<Admin onBack={() => navigate('/os')} theme={theme} toggleTheme={toggleTheme} />} />
+      <Route path="/os" element={<SovereignDashboard theme={theme} toggleTheme={toggleTheme} />} />
+      <Route path="/admin" element={<Admin theme={theme} toggleTheme={toggleTheme} />} />
+      <Route path="/vault" element={<Vault theme={theme} toggleTheme={toggleTheme} />} />
     </Routes>
   );
 }

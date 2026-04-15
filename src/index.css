@@ -1,23 +1,23 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;700&family=Outfit:wght@500;800&display=swap');
 
 :root {
-  /* DARK THEME (DEFAULT) */
-  --bg-deep: #050505;
-  --bg-card: rgba(10, 10, 15, 0.82);
-  --text-primary: #e2e8f0;
-  --text-secondary: #94a3b8;
-  --text-dim: #64748b;
-  --cyber-green: #00ff41;
-  --cyber-blue: #0ea5e9;
-  --cyber-purple: #8b5cf6;
-  --cyber-amber: #f59e0b;
-  --accent-primary: var(--cyber-blue);
-  --accent-secondary: var(--cyber-purple);
-  --glass-border: rgba(255, 255, 255, 0.08);
+  /* DARK THEME (REFRESHED) */
+  --bg-deep: #121214;
+  --bg-card: #1a1a1e;
+  --text-primary: #ffffff;
+  --text-secondary: #a1a1aa;
+  --text-dim: #52525b;
+  --cyber-green: #00ff88;
+  --cyber-blue: #00d9ff;
+  --cyber-purple: #818cf8;
+  --cyber-amber: #fbbf24;
+  --accent-primary: var(--cyber-green);
+  --accent-secondary: var(--cyber-blue);
+  --glass-border: rgba(255, 255, 255, 0.03);
   --glass-bg: var(--bg-card);
-  --glass-blur: blur(16px);
-  --grid-color: rgba(0, 255, 65, 0.03);
-  --orb-opacity: 0.15;
+  --glass-blur: blur(24px);
+  --grid-color: rgba(0, 255, 136, 0.015);
+  --orb-opacity: 0.1;
 }
 
 body.light-theme {
@@ -67,6 +67,7 @@ body {
 .responsive-grid-sidebar { display: grid; grid-template-columns: minmax(0, 1fr) 400px; gap: 6rem; }
 .responsive-input-group { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
 .responsive-metrics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.section-margin { margin-bottom: 12rem; }
 
 /* Scrollbar */
 ::-webkit-scrollbar { width: 4px; }
@@ -132,10 +133,18 @@ body {
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.65rem;
   text-transform: uppercase;
-  color: var(--cyber-blue);
+  color: var(--accent-primary);
   letter-spacing: 0.15em;
   margin-bottom: 0.5rem;
   display: block;
+}
+
+.avatar-circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 2px solid var(--accent-primary);
+  padding: 4px;
 }
 
 h1, h2, h3 {
@@ -201,12 +210,12 @@ h1, h2, h3 {
 /* UI Components */
 .badge-tech {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.7rem;
-  padding: 0.25rem 0.6rem;
-  border: 1px solid var(--cyber-blue);
-  color: var(--cyber-blue);
-  border-radius: 4px;
-  background: rgba(14, 165, 233, 0.05);
+  font-size: 0.65rem;
+  padding: 0.35rem 0.75rem;
+  border: 1px solid var(--glass-border);
+  color: var(--text-secondary);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.03);
   transition: all 0.3s ease;
 }
 
@@ -277,6 +286,8 @@ button.badge-tech:hover {
   .responsive-input-group { grid-template-columns: 1fr !important; }
   nav .flex-center { padding: 0 1rem !important; }
   main { padding: 90px 1rem !important; }
+  
+  .section-margin { margin-bottom: 4rem !important; }
   
   .hero-h1 { font-size: 2.25rem !important; text-align: center; }
   

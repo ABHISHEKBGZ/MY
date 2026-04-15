@@ -4,7 +4,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   PROJECTS as INITIAL_PROJECTS, BIO as INITIAL_BIO, BLOGS as INITIAL_BLOGS, 
   EDUCATION as INITIAL_EDUCATION, EXPERIENCE as INITIAL_EXPERIENCE, 
-  TECH_STACK as INITIAL_STACK, ACHIEVEMENTS as INITIAL_ACHIEVEMENTS 
+  TECH_STACK as INITIAL_STACK, ACHIEVEMENTS as INITIAL_ACHIEVEMENTS,
+  SERVICES as INITIAL_SERVICES, SNIPPETS as INITIAL_SNIPPETS
 } from './data/projects';
 
 const generateId = () => Math.random().toString(36).substr(2, 9);
@@ -141,12 +142,33 @@ export default function Admin({ onBack, theme, toggleTheme }) {
     setModalData(null);
   };
 
-  const handleDelete = (type, target) => {
+  const handleDelete = (type, targetId) => {
     if (!window.confirm("Permanently delete this entry?")) return;
-    if (type === 'project') saveData('as-os-projects', projects.filter(p => p.id !== target), setProjects);
-    if (type === 'blog') saveData('as-os-blogs', blogs.filter(b => b.id !== target), setBlogs);
-    if (type === 'education') saveData('as-os-education', education.filter(e => e !== target && e.id !== target.id), setEducation);
-    if (type === 'experience') saveData('as-os-experience', experience.filter(e => e !== target && e.id !== target.id), setExperience);
+    if (type === 'project') saveData('as-os-projects', projects.filter(p => p.id !== targetId), setProjects);
+    if (type === 'blog') saveData('as-os-blogs', blogs.filter(b => b.id !== targetId), setBlogs);
+    if (type === 'education') saveData('as-os-education', education.filter(e => e.id !== targetId), setEducation);
+    if (type === 'experience') saveData('as-os-experience', experience.filter(e => e.id !== targetId), setExperience);
+  };
+
+  const getSnapshotCode = () => {
+    return `export const BIO = ${JSON.stringify(bio, null, 2)};
+
+export const PROJECTS = ${JSON.stringify(projects, null, 2)};
+
+export const EDUCATION = ${JSON.stringify(education, null, 2)};
+
+export const EXPERIENCE = ${JSON.stringify(experience, null, 2)};
+
+export const TECH_STACK = ${JSON.stringify(stack, null, 2)};
+
+export const ACHIEVEMENTS = ${JSON.stringify(achievements, null, 2)};
+
+export const BLOGS = ${JSON.stringify(blogs, null, 2)};
+
+export const SERVICES = ${JSON.stringify(INITIAL_SERVICES, null, 2)};
+
+export const SNIPPETS = ${JSON.stringify(INITIAL_SNIPPETS, null, 2)};
+`;
   };
 
   if (!isAuthenticated) {
@@ -196,6 +218,9 @@ export default function Admin({ onBack, theme, toggleTheme }) {
           <TabButton id="stack" icon={Code2} label="Skill_Cloud" />
           <TabButton id="honors" icon={Award} label="Honors_Registry" />
           
+          <h3 className="cyber-label" style={{ margin: '1.5rem 0 1rem' }}>SYSTEM_PERSISTENCE</h3>
+          <TabButton id="snapshot" icon={Database} label="Commit_Bridge" />
+
           <div style={{ marginTop: 'auto', paddingTop: '2rem' }}>
             <button onClick={handlePurgeData} className="badge-tech" style={{ width: '100%', borderColor: 'var(--cyber-amber)', color: 'var(--cyber-amber)' }}>FACTORY_RESET</button>
           </div>
@@ -332,6 +357,30 @@ export default function Admin({ onBack, theme, toggleTheme }) {
                  <textarea name="achievements" defaultValue={achievements.join('\n')} rows="12" style={inputStyle} />
                  <button type="submit" className="badge-tech" style={{ padding: '1rem', background: 'var(--cyber-blue)', color: '#000', cursor: 'pointer', marginTop: '1rem' }}><Save size={18} style={{display:'inline', marginRight:'0.5rem'}}/> UPDATE_HONORS_REGISTRY</button>
                </form>
+             </motion.div>
+          )}
+
+          {activeTab === 'snapshot' && (
+             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                <h3 className="cyber-label" style={{ marginBottom: '1rem' }}>Sovereign Snapshot Bridge</h3>
+                <p className="mono" style={{ fontSize: '0.8rem', opacity: 0.6, marginBottom: '2rem' }}>
+                   To make your changes **PERMANENT** (surviving cache clears), copy the code below and ask your developer (Antigravity) to "Apply this Snapshot".
+                </p>
+                <div style={{ position: 'relative' }}>
+                   <textarea 
+                     readOnly 
+                     value={getSnapshotCode()} 
+                     rows="15" 
+                     style={{ ...inputStyle, fontSize: '0.7rem', color: 'var(--cyber-green)', background: '#000' }} 
+                   />
+                   <button 
+                     onClick={() => { navigator.clipboard.writeText(getSnapshotCode()); alert("Snapshot copied to clipboard."); }}
+                     className="badge-tech" 
+                     style={{ position: 'absolute', top: '1rem', right: '1rem', background: 'var(--cyber-blue)', color: '#000', border: 'none' }}
+                   >
+                     COPY_CODE
+                   </button>
+                </div>
              </motion.div>
           )}
 

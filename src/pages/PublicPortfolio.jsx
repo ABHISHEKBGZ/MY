@@ -1,314 +1,263 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { 
-  Globe, Mail, FileText, ArrowRight, Send, Code2, MessageSquare, Terminal, Award, CheckCircle, Sun, Moon, Zap, Shield, Cpu
+  Globe, Mail, Terminal, Cpu, ArrowRight, ExternalLink, Sun, Moon, Star, Code2, User, FileText, Send
 } from 'lucide-react';
-import { PROJECTS as INITIAL_PROJECTS, BIO, EDUCATION, EXPERIENCE, TECH_STACK, ACHIEVEMENTS, BLOGS } from '../data/projects';
-import { Timeline, StackCloud, CodingProfiles, Testimonials, TechnicalBlog } from '../components/PortfolioSections';
-import { IsoCard } from '../components/IsoCard';
+import { PROJECTS, BIO, SERVICES, SNIPPETS, EXPERIENCE, TECH_STACK } from '../data/projects';
 
-const MOCK_TESTIMONIALS = [
-  { quote: "Abhishek's approach to recursive intelligence loops in JADU is groundbreaking for personal OS architecture.", author: "Dr. Arvin K.", role: "AI Researcher" },
-  { quote: "AalayaJ solved our real-time sync latency issues in weeks. Exceptional systems engineering.", author: "Sarah J.", role: "CTO, TechFlow" }
-];
-
-export default function PublicPortfolio({ onAccessOS, theme, toggleTheme }) {
+export default function PublicPortfolio({ theme, toggleTheme }) {
   const navigate = useNavigate();
-  const [projects, setProjects] = useState([]);
-  const [bio, setBio] = useState(BIO);
-  const [education, setEducation] = useState(EDUCATION);
-  const [experience, setExperience] = useState(EXPERIENCE);
-  const [stack, setStack] = useState(TECH_STACK);
-  const [achievements, setAchievements] = useState(ACHIEVEMENTS);
-  const [blogs, setBlogs] = useState(BLOGS);
-  
-  const [formState, setFormState] = useState('idle');
-
-  const handleContactSubmit = () => {
-    setFormState('sending');
-    setTimeout(() => setFormState('sent'), 1500); 
-    setTimeout(() => setFormState('idle'), 4500);
-  };
-
-  useEffect(() => {
-    const sProj = localStorage.getItem('as-os-projects');
-    const sBio = localStorage.getItem('as-os-bio');
-    const sEdu = localStorage.getItem('as-os-education');
-    const sExp = localStorage.getItem('as-os-experience');
-    const sStack = localStorage.getItem('as-os-techstack');
-    const sAchieve = localStorage.getItem('as-os-achievements');
-    const sBlogs = localStorage.getItem('as-os-blogs');
-
-    if (sProj) setProjects(JSON.parse(sProj)); else setProjects(INITIAL_PROJECTS);
-    if (sBio) setBio(JSON.parse(sBio));
-    if (sEdu) setEducation(JSON.parse(sEdu));
-    if (sExp) setExperience(JSON.parse(sExp));
-    if (sStack) setStack(JSON.parse(sStack));
-    if (sAchieve) setAchievements(JSON.parse(sAchieve));
-    if (sBlogs) setBlogs(JSON.parse(sBlogs));
-    
-    window.scrollTo(0, 0);
-  }, []);
-
-  const publicProjects = projects.filter(p => p.status === 'Public');
 
   return (
-    <div style={{ background: 'var(--bg-deep)', color: 'var(--text-primary)', minHeight: '100vh', scrollBehavior: 'smooth', position: 'relative', overflow: 'hidden' }}>
+    <div style={{ background: 'var(--bg-deep)', color: 'var(--text-primary)', minHeight: '100vh' }}>
       
-      {/* AMBIENT GLOW ORBS */}
-      <div className="bg-glow-orb bg-glow-blue" />
-      <div className="bg-glow-orb bg-glow-purple" />
-
-      {/* PROFESSIONAL NAVBAR */}
-      <nav style={{ position: 'fixed', top: 0, width: '100%', height: '70px', background: 'var(--bg-card)', backdropFilter: 'blur(16px)', zIndex: 100, borderBottom: '1px solid var(--glass-border)' }}>
-        <div className="flex-center" style={{ maxWidth: '1200px', margin: '0 auto', height: '100%', justifyContent: 'space-between', padding: '0 1rem' }}>
-          <div className="mono" style={{ fontWeight: 800, letterSpacing: '2px', color: 'var(--text-primary)' }}>{bio.name.toUpperCase()}</div>
-          <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-            <button 
-              onClick={toggleTheme} 
-              className="badge-tech" 
-              style={{ background: 'none', padding: '0.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-            >
-              {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
-            </button>
-            <button className="badge-tech" onClick={onAccessOS} style={{ background: 'var(--cyber-blue)', color: '#000', border: 'none' }}>
-              ACCESS_OS
+      {/* NAVIGATION */}
+      <nav style={{ position: 'fixed', top: 0, width: '100%', height: '80px', background: 'var(--bg-deep)', borderBottom: '1px solid var(--glass-border)', zIndex: 100 }}>
+        <div className="flex-center" style={{ maxWidth: '1200px', margin: '0 auto', height: '100%', justifyContent: 'space-between', padding: '0 2rem' }}>
+          <button onClick={() => navigate('/')} className="mono" style={{ background: 'none', border: 'none', color: 'var(--text-primary)', cursor: 'pointer', fontWeight: 800, fontSize: '1.1rem' }}>
+            {BIO.name.split(' ')[0]}
+          </button>
+          
+          <div className="flex-center" style={{ gap: '2.5rem' }}>
+            <div className="mono" style={{ display: 'flex', gap: '2rem', fontSize: '0.75rem' }}>
+               <button onClick={() => navigate('/mentorship')} style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer' }} className="hover-glow">MENTORSHIP</button>
+               <button onClick={() => navigate('/portfolio')} style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer' }} className="hover-glow">PORTFOLIO</button>
+               <button onClick={() => navigate('/snippets')} style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer' }} className="hover-glow">SNIPPETS</button>
+            </div>
+            <button onClick={toggleTheme} className="badge-tech" style={{ background: 'none', padding: '0.4rem' }}>
+              {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
             </button>
           </div>
         </div>
       </nav>
 
-      <main style={{ maxWidth: '1200px', margin: '0 auto', padding: '120px 2rem', position: 'relative', zIndex: 10 }}>
+      <main style={{ maxWidth: '1100px', margin: '0 auto', padding: '160px 2rem 100px' }}>
         
-        {/* HERO SECTION - REFINED */}
-        <section className="responsive-grid-2" style={{ alignItems: 'center', marginBottom: '12rem' }}>
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} style={{ textAlign: 'inherit' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem', justifyContent: 'inherit' }}>
-                <span className="cyber-label" style={{ margin: 0 }}>Strategic Engineering // 2026</span>
-                <div style={{ width: '40px', height: '1px', background: 'var(--cyber-blue)', opacity: 0.3 }} />
-                <span className="mono" style={{ fontSize: '0.6rem', opacity: 0.5 }}>OS_BUILD_8.2.0</span>
-            </div>
-            <h1 className="text-gradient hero-h1" style={{ fontWeight: 800, lineHeight: 1.1, margin: '1rem 0' }}>{bio.role}</h1>
-            <p className="mono" style={{ fontSize: '1.1rem', opacity: 0.7, lineHeight: 1.6, marginBottom: '2.5rem', maxWidth: '550px' }}>
-              {bio.summary}
-            </p>
-            <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center', justifyContent: 'inherit', flexWrap: 'wrap' }}>
-              <a href={bio.resumeUrl} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
-                <button className="badge-tech" style={{ background: 'var(--cyber-blue)', color: '#000', border: 'none', padding: '0.85rem 1.75rem', display: 'flex', alignItems: 'center', gap: '0.75rem', cursor: 'pointer', fontWeight: 700 }}>
-                  <FileText size={16} /> VIEW_INTEL_SNAPSHOT
+        {/* HYBRID HERO (Centered) */}
+        <section className="section-margin" style={{ textAlign: 'center' }}>
+          <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}>
+             <div className="flex-center" style={{ marginBottom: '2rem' }}>
+                <div className="avatar-circle flex-center" style={{ width: '120px', height: '120px', borderColor: 'var(--cyber-green)', boxShadow: '0 0 40px rgba(0, 255, 136, 0.1)' }}>
+                   <User size={64} color="var(--cyber-green)" />
+                </div>
+             </div>
+             
+             <h1 style={{ fontSize: '3.5rem', fontWeight: 800, lineHeight: 1.1, marginBottom: '1.5rem' }}>
+                I do code and make content <span style={{ color: 'var(--cyber-green)' }}>about it!</span>
+             </h1>
+             <p className="mono" style={{ fontSize: '1.1rem', opacity: 0.6, maxWidth: '700px', margin: '0 auto 3rem', lineHeight: 1.8 }}>
+                I am <span style={{ color: '#fff', fontWeight: 700 }}>{BIO.name}</span>, a CSE student and AI Architect building autonomous systems, 
+                sovereign data layers, and high-performance sync protocols.
+             </p>
+
+             <div className="flex-center" style={{ gap: '1.5rem' }}>
+                <button className="badge-tech" style={{ padding: '1rem 2.5rem', background: 'var(--cyber-green)', color: '#000', fontWeight: 800, borderRadius: '50px', display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+                   GET_IN_TOUCH <Send size={16} />
                 </button>
-              </a>
-              <div style={{ display: 'flex', gap: '1.25rem', paddingLeft: '1rem', flexWrap: 'wrap' }}>
-                <motion.div whileHover={{ scale: 1.2, color: 'var(--cyber-blue)' }}><Code2 size={20} style={{ opacity: 0.5, cursor: 'pointer' }} /></motion.div>
-                <motion.div whileHover={{ scale: 1.2, color: 'var(--cyber-blue)' }}><Mail size={20} style={{ opacity: 0.5, cursor: 'pointer' }} /></motion.div>
-                <motion.div whileHover={{ scale: 1.2, color: 'var(--cyber-blue)' }}><MessageSquare size={20} style={{ opacity: 0.5, cursor: 'pointer' }} /></motion.div>
-              </div>
-            </div>
+                <button className="badge-tech" style={{ padding: '1rem 2.5rem', background: 'transparent', borderRadius: '50px', display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+                   DOWNLOAD_CV <FileText size={16} />
+                </button>
+             </div>
+
+             <div className="flex-center" style={{ marginTop: '4rem', gap: '3rem', opacity: 0.3 }}>
+                <Globe size={20} />
+                <Terminal size={20} />
+                <Cpu size={20} />
+                <Code2 size={20} />
+             </div>
           </motion.div>
-          <div className="flex-center" style={{ width: '100%', minHeight: '300px', height: 'auto', position: 'relative', marginTop: '2rem' }}>
-             <div style={{ position: 'absolute', width: '200px', height: '200px', background: 'var(--cyber-blue)', filter: 'blur(100px)', opacity: 0.1, zIndex: 0 }} />
-             <IsoCard />
-          </div>
         </section>
 
-        {/* STRATEGIC ARCHITECTURE / ENGINEERING DNA */}
-        <motion.section 
-          initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} 
-          className="responsive-grid-3-to-1"
-          style={{ marginBottom: '12rem' }}
-        >
-          <div className="card" style={{ borderTop: '2px solid var(--cyber-blue)' }}>
-            <Cpu size={20} color="var(--cyber-blue)" style={{ marginBottom: '1rem' }} />
-            <div className="cyber-label">Performance_DNA</div>
-            <p className="mono" style={{ fontSize: '0.75rem', opacity: 0.6 }}>Architecting for sub-50ms latency in distributed systems. Prioritizing execution speed and minimal resource footprints.</p>
-          </div>
-          <div className="card" style={{ borderTop: '2px solid var(--cyber-emerald, #10b981)' }}>
-            <Shield size={20} color="#10b981" style={{ marginBottom: '1rem' }} />
-            <div className="cyber-label" style={{ color: '#10b981' }}>Sovereign_Trust</div>
-            <p className="mono" style={{ fontSize: '0.75rem', opacity: 0.6 }}>100% data-sovereign designs. Implementing local-first persistence models to reclaim user privacy and agency.</p>
-          </div>
-          <div className="card" style={{ borderTop: '2px solid var(--cyber-amber)' }}>
-            <Zap size={20} color="var(--cyber-amber)" style={{ marginBottom: '1rem' }} />
-            <div className="cyber-label" style={{ color: 'var(--cyber-amber)' }}>Strategic_Scale</div>
-            <p className="mono" style={{ fontSize: '0.75rem', opacity: 0.6 }}>Designing recursive intelligence loops that scale from solo developer local-grids to enterprise-grade clusters.</p>
-          </div>
-        </motion.section>
+        {/* SERVICES / WHAT I DO */}
+        <section className="section-margin">
+           <h2 className="cyber-label" style={{ marginBottom: '2.5rem' }}>Core_Services</h2>
+           <div className="responsive-grid-2">
+              {SERVICES.map((s) => (
+                <div key={s.id} className="card" style={{ padding: '3rem' }}>
+                   <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '2rem' }}>
+                      <div className="flex-center" style={{ width: '50px', height: '50px', background: 'rgba(0, 255, 136, 0.05)', borderRadius: '12px' }}>
+                        {s.icon === 'Terminal' ? <Terminal size={24} color="var(--cyber-green)" /> : <Cpu size={24} color="var(--cyber-purple)" />}
+                      </div>
+                      <ArrowRight size={20} style={{ opacity: 0.2 }} />
+                   </div>
+                   <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>{s.title}</h3>
+                   <p className="mono" style={{ fontSize: '0.85rem', opacity: 0.6, lineHeight: 1.6 }}>{s.desc}</p>
+                </div>
+              ))}
+           </div>
+        </section>
 
-        {/* STRATEGIC SYSTEM HEALTH - NEW SECTION */}
-        <motion.section 
-          initial={{ opacity: 0, y: 40 }} 
-          whileInView={{ opacity: 1, y: 0 }} 
-          viewport={{ once: true }}
-          style={{ marginBottom: '12rem' }}
-        >
-          <div className="card" style={{ padding: '3rem', background: 'var(--bg-card)', border: '1px solid var(--glass-border)' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '3rem', flexWrap: 'wrap', gap: '1rem' }}>
-                <div>
-                    <h2 className="cyber-label">Strategic_System_Health</h2>
-                    <h3 style={{ fontSize: '2rem' }}>Live Network Telemetry</h3>
-                </div>
-                <div className="badge-tech" style={{ color: 'var(--cyber-green)', borderColor: 'var(--cyber-green)' }}>
-                    <Zap size={12} style={{ display: 'inline', marginRight: '0.5rem' }}/> ALL_SYSTEMS_OPERATIONAL
-                </div>
-            </div>
-            
-            <div className="bento-grid" style={{ gap: '2rem' }}>
-                <div style={{ gridColumn: 'span 4' }}>
-                   <div className="mono" style={{ fontSize: '0.7rem', opacity: 0.5, marginBottom: '0.5rem' }}>GLOBAL_UPTIME</div>
-                   <div style={{ fontSize: '2.5rem', fontWeight: 800 }} className="text-gradient">99.98<span style={{ fontSize: '1rem', color: 'var(--text-dim)' }}>%</span></div>
-                   <div className="mono" style={{ fontSize: '0.6rem', color: 'var(--cyber-blue)', marginTop: '0.5rem' }}>LATEST_INCIDENT: 14D_AGO</div>
-                </div>
-                <div style={{ gridColumn: 'span 4' }}>
-                   <div className="mono" style={{ fontSize: '0.7rem', opacity: 0.5, marginBottom: '0.5rem' }}>DATA_THROUGHPUT</div>
-                   <div style={{ fontSize: '2.5rem', fontWeight: 800 }}>8.4<span style={{ fontSize: '1rem', color: 'var(--text-dim)' }}>PB/YR</span></div>
-                   <div className="mono" style={{ fontSize: '0.6rem', color: 'var(--cyber-blue)', marginTop: '0.5rem' }}>PEAK: 12.1_TB/SEC</div>
-                </div>
-                <div style={{ gridColumn: 'span 4' }}>
-                   <div className="mono" style={{ fontSize: '0.7rem', opacity: 0.5, marginBottom: '0.5rem' }}>SOVEREIGN_NODES</div>
-                   <div style={{ fontSize: '2.5rem', fontWeight: 800 }}>1,204<span style={{ fontSize: '1rem', color: 'var(--text-dim)' }}>+</span></div>
-                   <div className="mono" style={{ fontSize: '0.6rem', color: 'var(--cyber-blue)', marginTop: '0.5rem' }}>AUTONOMOUS_MESH_ACTIVE</div>
-                </div>
-            </div>
-          </div>
-        </motion.section>
+        {/* ABOUT ME SECTION */}
+        <section className="section-margin">
+           <h2 className="cyber-label" style={{ marginBottom: '2.5rem' }}>About_Me</h2>
+           <div className="card" style={{ padding: '3rem', borderLeft: '4px solid var(--cyber-blue)' }}>
+              <h3 style={{ fontSize: '2rem', marginBottom: '1.5rem' }}>Professional Background & Expertise</h3>
+              <p className="mono" style={{ fontSize: '1rem', opacity: 0.8, lineHeight: 1.8, marginBottom: '1.5rem' }}>
+                 {BIO.summary}
+              </p>
+              <p className="mono" style={{ fontSize: '0.95rem', opacity: 0.7, lineHeight: 1.8 }}>
+                 As a CSE engineering student, my passion lies in solving complex architectural challenges. Whether it's crafting 
+                 zero-latency synchronization protocols or designing recursive intelligence loops for AI agents, I focus on 
+                 building robust, scalable, and decentralized systems. I thrive at the intersection of hardcore backend engineering 
+                 and cutting-edge machine learning.
+              </p>
+           </div>
+        </section>
 
-        {/* PROJECTS SECTION - STRATEGIC STORYTELLING */}
-        <motion.section 
-          initial={{ opacity: 0, y: 40 }} 
-          whileInView={{ opacity: 1, y: 0 }} 
-          viewport={{ once: true, margin: "-100px" }} 
-          transition={{ duration: 0.6 }}
-          style={{ marginBottom: '12rem' }}
-        >
-          <h2 className="cyber-label" style={{ marginBottom: '3.5rem' }}>Featured_Missions</h2>
-          <div className="bento-grid">
-            {publicProjects.map((p, i) => (
-              <div key={p.id} className="card" style={{ gridColumn: i === 0 ? 'span 8' : 'span 4', display: 'flex', flexDirection: 'column' }}>
-                <h3 style={{ fontSize: '2rem', marginBottom: '1rem' }}>{p.title}</h3>
-                <div className="mono" style={{ background: 'var(--bg-card)', padding: '1rem', borderRadius: '12px', borderLeft: '2px solid var(--cyber-blue)', margin: '1rem 0', border: '1px solid var(--glass-border)' }}>
-                  <span style={{ color: 'var(--cyber-blue)', fontWeight: 700 }}>PROBLEM: </span> {p.problem}
-                </div>
-                <p className="mono" style={{ fontSize: '0.85rem', opacity: 0.6, margin: '1rem 0' }}>{p.desc}</p>
-                <div className="mono" style={{ fontSize: '0.8rem', color: 'var(--cyber-green)', margin: '1rem 0' }}>
-                  <Award size={14} style={{ display: 'inline', marginRight: '0.5rem' }} /> IMPACT: {p.metrics}
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 'auto', paddingTop: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
-                  <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-                    {p.tech.slice(0, 3).map(t => <span key={t} className="badge-tech" style={{ fontSize: '0.6rem' }}>{t}</span>)}
-                  </div>
-                  <div style={{ display: 'flex', gap: '1rem' }}>
-                    <button onClick={() => navigate(`/project/${p.id}`)} className="badge-tech" style={{ background: 'var(--cyber-blue)', color: '#000', border: 'none', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                      INSPECT <ArrowRight size={14} />
-                    </button>
-                  </div>
-                </div>
+        {/* SKILLS / TECH STACK SECTION */}
+        <section className="section-margin">
+           <h2 className="cyber-label" style={{ marginBottom: '2.5rem' }}>Technical_Proficiency</h2>
+           <div className="responsive-grid-2">
+              <div className="card" style={{ padding: '2.5rem' }}>
+                 <h3 style={{ fontSize: '1.3rem', marginBottom: '1.5rem', color: 'var(--cyber-blue)' }}>Languages</h3>
+                 <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+                    {TECH_STACK.languages.map(lang => <span key={lang} className="badge-tech">{lang}</span>)}
+                 </div>
               </div>
-            ))}
-          </div>
-        </motion.section>
+              <div className="card" style={{ padding: '2.5rem' }}>
+                 <h3 style={{ fontSize: '1.3rem', marginBottom: '1.5rem', color: 'var(--cyber-green)' }}>Frameworks</h3>
+                 <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+                    {TECH_STACK.frameworks.map(fw => <span key={fw} className="badge-tech">{fw}</span>)}
+                 </div>
+              </div>
+              <div className="card" style={{ padding: '2.5rem' }}>
+                 <h3 style={{ fontSize: '1.3rem', marginBottom: '1.5rem', color: 'var(--cyber-amber)' }}>Tools & Platforms</h3>
+                 <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+                    {TECH_STACK.tools.map(tool => <span key={tool} className="badge-tech">{tool}</span>)}
+                 </div>
+              </div>
+              <div className="card" style={{ padding: '2.5rem' }}>
+                 <h3 style={{ fontSize: '1.3rem', marginBottom: '1.5rem', color: 'var(--cyber-purple)' }}>AI & Machine Learning</h3>
+                 <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+                    {TECH_STACK.ai.map(ai => <span key={ai} className="badge-tech">{ai}</span>)}
+                 </div>
+              </div>
+           </div>
+        </section>
 
-        {/* TECH STACK - CATEGORIZED GRID */}
-        <motion.section 
-          initial={{ opacity: 0, y: 40 }} 
-          whileInView={{ opacity: 1, y: 0 }} 
-          viewport={{ once: true, margin: "-100px" }} 
-          transition={{ duration: 0.6 }}
-          style={{ marginBottom: '12rem' }}
-        >
-          <h2 className="cyber-label" style={{ marginBottom: '3.5rem' }}>High_Intensity_Stack</h2>
-          <StackCloud stack={stack} />
-        </motion.section>
+        {/* FEATURED MISSIONS */}
+        <section className="section-margin">
+           <div className="flex-center" style={{ justifyContent: 'space-between', marginBottom: '3rem' }}>
+              <h2 className="cyber-label">Featured_Missions</h2>
+              <button onClick={() => navigate('/portfolio')} style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.5rem' }} className="mono hover-glow">
+                EXPLORE_ARCHIVE <ArrowRight size={14} />
+              </button>
+           </div>
 
-        {/* SOCIAL PROOF: TESTIMONIALS */}
-        <motion.section 
-          initial={{ opacity: 0, y: 40 }} 
-          whileInView={{ opacity: 1, y: 0 }} 
-          viewport={{ once: true, margin: "-100px" }} 
-          transition={{ duration: 0.6 }}
-          style={{ marginBottom: '12rem' }}
-        >
-          <h2 className="cyber-label" style={{ marginBottom: '3.5rem' }}>Peer_Verification</h2>
-          <Testimonials items={MOCK_TESTIMONIALS} />
-        </motion.section>
+           <div style={{ display: 'flex', flexDirection: 'column', gap: '4rem' }}>
+              {PROJECTS.slice(0, 2).map((p) => (
+                <motion.div 
+                  key={p.id}
+                  whileHover={{ x: 10 }}
+                  className="responsive-grid-2"
+                  style={{ gap: '4rem', alignItems: 'center' }}
+                >
+                  <div className="card" style={{ padding: 0, overflow: 'hidden', aspectRatio: '16/9', background: '#000' }}>
+                     <div style={{ width: '100%', height: '100%', background: 'linear-gradient(45deg, #1a1a1e, #000)', position: 'relative' }}>
+                        <div className="flex-center" style={{ position: 'absolute', inset: 0, opacity: 0.1 }}>
+                           <Code2 size={120} />
+                        </div>
+                     </div>
+                  </div>
+                  <div>
+                     <div className="cyber-label" style={{ color: p.status === 'Public' ? 'var(--cyber-green)' : 'var(--cyber-amber)' }}>{p.status.toUpperCase()}_ENV</div>
+                     <h3 style={{ fontSize: '2.5rem', margin: '0.5rem 0 1.5rem' }}>{p.title}</h3>
+                     <p className="mono" style={{ opacity: 0.7, marginBottom: '2rem' }}>{p.desc}</p>
+                     <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+                        {p.tech.map(t => <span key={t} className="badge-tech">{t}</span>)}
+                     </div>
+                  </div>
+                </motion.div>
+              ))}
+           </div>
+        </section>
 
-        {/* EDUCATION & EXPERIENCE */}
-        <motion.section 
-          initial={{ opacity: 0, y: 40 }} 
-          whileInView={{ opacity: 1, y: 0 }} 
-          viewport={{ once: true, margin: "-100px" }} 
-          transition={{ duration: 0.6 }}
-          className="responsive-grid-sidebar" style={{ marginBottom: '12rem' }}
-        >
-          <div>
-            <h2 className="cyber-label" style={{ marginBottom: '3.5rem' }}>Chronological_Execution</h2>
-            <Timeline items={[...experience, ...education]} />
-          </div>
-          <div>
-            <h2 className="cyber-label" style={{ marginBottom: '3.5rem' }}>Algorithmic_Standing</h2>
-            <CodingProfiles social={bio.social} />
-            <div className="card" style={{ marginTop: '2rem' }}>
-              <div className="cyber-label">Honors & Certification</div>
-              <ul className="mono" style={{ marginTop: '1.5rem', fontSize: '0.8rem', opacity: 0.7, paddingLeft: '1.2rem' }}>
-                {achievements.map((a, i) => (
-                  <li key={i} style={{ marginBottom: '1rem' }}>{a}</li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </motion.section>
+        {/* EXPERIENCE TIMELINE (Ref #2) */}
+        <section className="section-margin">
+           <h2 className="cyber-label" style={{ marginBottom: '4rem' }}>Professional_Trajectory</h2>
+           <div style={{ position: 'relative', paddingLeft: '3rem', borderLeft: '1px solid var(--glass-border)' }}>
+              {EXPERIENCE?.map((exp, i) => (
+                 <motion.div 
+                   key={i}
+                   initial={{ opacity: 0, x: -20 }}
+                   whileInView={{ opacity: 1, x: 0 }}
+                   viewport={{ once: true }}
+                   style={{ marginBottom: '5rem', position: 'relative' }}
+                 >
+                    <div style={{ position: 'absolute', left: '-3.4rem', top: '0.5rem', width: '12px', height: '12px', background: 'var(--cyber-green)', borderRadius: '50%', boxShadow: '0 0 15px var(--cyber-green)' }} />
+                    <div className="flex-center" style={{ justifyContent: 'space-between', marginBottom: '1rem', flexWrap: 'wrap', gap: '1rem' }}>
+                       <h3 style={{ fontSize: '1.8rem', fontWeight: 800 }}>{exp.role} <span style={{ opacity: 0.3, fontWeight: 400 }}>at</span> <span style={{ color: 'var(--cyber-blue)' }}>{exp.company}</span></h3>
+                       <span className="mono" style={{ fontSize: '0.8rem', opacity: 0.4 }}>{exp.duration}</span>
+                    </div>
+                    <p className="mono" style={{ fontSize: '0.95rem', opacity: 0.7, lineHeight: 1.8, maxWidth: '800px' }}>
+                       {exp.details}
+                    </p>
+                 </motion.div>
+              )) || (
+                 <div className="mono" style={{ opacity: 0.3 }}>[ INITIALIZING_TIMELINE_SEQUENCES ]</div>
+              )}
+           </div>
+        </section>
 
-        {/* TECHNICAL WRITING / BLOG */}
-        <motion.section 
-          initial={{ opacity: 0, y: 40 }} 
-          whileInView={{ opacity: 1, y: 0 }} 
-          viewport={{ once: true, margin: "-100px" }} 
-          transition={{ duration: 0.6 }}
-          style={{ marginBottom: '12rem' }}
-        >
-          <h2 className="cyber-label" style={{ marginBottom: '3.5rem' }}>Intellectual_Output</h2>
-          <TechnicalBlog posts={blogs} />
-        </motion.section>
+        {/* SNIPPETS TEASER */}
+        <section>
+           <div className="flex-center" style={{ justifyContent: 'space-between', marginBottom: '3rem' }}>
+              <h2 className="cyber-label">Protocol_Snippets</h2>
+              <button onClick={() => navigate('/snippets')} style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.5rem' }} className="mono hover-glow">
+                SYSTEM_VAULT <ArrowRight size={14} />
+              </button>
+           </div>
+           
+           <div className="responsive-grid-2">
+              {SNIPPETS.map(snip => (
+                <div key={snip.id} className="card" style={{ padding: '2.5rem' }}>
+                   <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.5rem' }}>
+                      <div style={{ display: 'flex', gap: '0.5rem' }}>
+                         {snip.tags.map(t => <span key={t} className="badge-tech" style={{ fontSize: '0.6rem' }}>{t}</span>)}
+                      </div>
+                      <div className="flex-center" style={{ gap: '0.25rem', opacity: 0.4 }}>
+                         <Star size={12} fill="var(--cyber-amber)" color="transparent" />
+                         <span className="mono" style={{ fontSize: '0.7rem' }}>{snip.stars}</span>
+                      </div>
+                   </div>
+                   <h3 style={{ fontSize: '1.2rem', marginBottom: '0.75rem' }}>{snip.title}</h3>
+                   <p className="mono" style={{ fontSize: '0.8rem', opacity: 0.6 }}>{snip.desc}</p>
+                </div>
+              ))}
+           </div>
+        </section>
 
-        {/* REFINED CONTACT FORM */}
-        <motion.section 
-          initial={{ opacity: 0, y: 40 }} 
-          whileInView={{ opacity: 1, y: 0 }} 
-          viewport={{ once: true, margin: "-100px" }} 
-          transition={{ duration: 0.6 }}
-          className="flex-center" style={{ marginBottom: '12rem' }}
-        >
-          <div className="card" style={{ maxWidth: '800px', width: '100%', padding: '4rem', textAlign: 'center' }}>
-            <span className="cyber-label">Establish_Uplink</span>
-            <h3 style={{ fontSize: '3rem', margin: '1.5rem 0 3rem' }}>Ready for the next mission?</h3>
-            <div className="responsive-input-group" style={{ marginBottom: '1.5rem' }}>
-              <input type="text" placeholder="NAME_IDENTIFIER" style={{ padding: '1.25rem', background: 'var(--bg-card)', border: '1px solid var(--glass-border)', color: 'var(--text-primary)' }} />
-              <input type="email" placeholder="EMAIL_ENPOINT" style={{ padding: '1.25rem', background: 'var(--bg-card)', border: '1px solid var(--glass-border)', color: 'var(--text-primary)' }} />
-            </div>
-            <textarea placeholder="MISSION_DESCRIPTION" rows="6" style={{ width: '100%', padding: '1.25rem', background: 'var(--bg-card)', border: '1px solid var(--glass-border)', color: 'var(--text-primary)', marginBottom: '2.5rem' }} />
-            
-            <button 
-              onClick={handleContactSubmit}
-              disabled={formState !== 'idle'}
-              className="badge-tech" 
-              style={{ 
-                width: '100%', padding: '1.5rem', 
-                background: formState === 'sent' ? 'var(--cyber-green)' : 'var(--cyber-blue)', 
-                color: '#000', border: 'none', display: 'flex', alignItems: 'center', 
-                justifyContent: 'center', gap: '1rem', fontSize: '1rem', cursor: formState !== 'idle' ? 'default' : 'pointer'
-              }}
-            >
-              {formState === 'idle' && <><Send size={20} /> TRANSMIT_DATA</>}
-              {formState === 'sending' && <span className="mono">ENCRYPTING & SENDING...</span>}
-              {formState === 'sent' && <><CheckCircle size={20} /> UPLINK_ESTABLISHED</>}
-            </button>
-          </div>
-        </motion.section>
+        {/* CONTACT INFORMATION */}
+        <section className="section-margin" style={{ marginTop: '8rem', textAlign: 'center' }}>
+           <h2 className="cyber-label" style={{ marginBottom: '2rem' }}>Secure_Comms_Link</h2>
+           <div className="card" style={{ padding: '4rem 2rem', border: '1px dashed var(--cyber-blue)', maxWidth: '600px', margin: '0 auto' }}>
+              <h3 style={{ fontSize: '2rem', marginBottom: '1rem' }}>Let's Build Something.</h3>
+              <p className="mono" style={{ fontSize: '1rem', opacity: 0.6, marginBottom: '2.5rem' }}>
+                 I'm currently open for new opportunities, collaborations, or even just a chat about autonomous architectures.
+              </p>
+              <a href={`mailto:${BIO.email}`} style={{ textDecoration: 'none' }}>
+                 <button className="badge-tech" style={{ padding: '1.2rem 3rem', background: 'var(--cyber-blue)', color: '#000', fontWeight: 800, borderRadius: '12px', fontSize: '1rem', display: 'inline-flex', gap: '0.75rem', alignItems: 'center' }}>
+                    <Mail size={18} /> INITIATE_CONTACT
+                 </button>
+              </a>
+              <div className="mono" style={{ fontSize: '0.8rem', opacity: 0.4, marginTop: '2rem' }}>
+                 {BIO.email}
+              </div>
+           </div>
+        </section>
 
       </main>
 
-      <footer className="mono" style={{ textAlign: 'center', opacity: 0.2, fontSize: '0.65rem', paddingBottom: '6rem', letterSpacing: '5px' }}>
-        SOVEREIGN_SYSTEMS // {bio.name.toUpperCase()} // DESIGN_DRIVEN_ENGINEERING
+      <footer style={{ padding: '6rem 2rem', borderTop: '1px solid var(--glass-border)', background: 'rgba(0,0,0,0.2)' }}>
+         <div className="flex-center" style={{ maxWidth: '1100px', margin: '0 auto', justifyContent: 'space-between', flexWrap: 'wrap', gap: '2rem' }}>
+            <div className="mono" style={{ opacity: 0.3, fontSize: '0.7rem' }}>© 2026 SOVEREIGN_IDENTITY // ABHISHEK SINGH</div>
+            <div className="flex-center" style={{ gap: '2rem' }}>
+               <button onClick={() => navigate('/os')} className="mono hover-glow" style={{ background: 'none', border: 'none', color: 'var(--text-dim)', fontSize: '0.75rem' }}>OS_DASHBOARD</button>
+               <button onClick={() => navigate('/admin')} className="mono hover-glow" style={{ background: 'none', border: 'none', color: 'var(--text-dim)', fontSize: '0.75rem' }}>CMS_ADMIN</button>
+               <button onClick={() => navigate('/vault')} className="mono hover-glow" style={{ background: 'none', border: 'none', color: 'var(--text-dim)', fontSize: '0.75rem' }}>ENCRYPTED_VAULT</button>
+            </div>
+         </div>
       </footer>
     </div>
   );

@@ -82,3 +82,39 @@ export const BLOGS = [
   { id: 'peor-loop', title: "The PEOR Loop: Recursive Planning in AI Agents", date: "April 2026", readTime: "5 min", excerpt: "Exploring the mathematical foundations of goal-splitting in autonomous systems.", content: "Artificial Intelligence is no longer just about prompt-response pairs. It requires autonomy. The PEOR (Perceive, Evaluate, Organize, Respond) loop is a framework I developed to allow agents to recursively break down their own goals into sub-tasks. \n\n### The Math Behind PEOR\nBy maintaining a state tree of objectives, the AI can rollback decisions when it encounters failure states. This drastically reduces hallucination rates in complex environments." },
   { id: 'zero-latency', title: "Zero-Latency Sync: Beyond WebSockets", date: "March 2026", readTime: "8 min", excerpt: "How localized caching and encrypted handshakes redefine real-time synchronization.", content: "WebSockets are great, but maintaining persistent TCP connection state across 10,000 mobile devices drains both battery and server memory. \n\n### The Optimization\nIn AalayaJ, I implemented an optimized polling-cache layer. The client assumes the network is down and caches everything. Background workers sync deltas using highly compressed JSON payloads over standard HTTP/2, saving 40% bandwidth while mimicking real-time speed." }
 ];
+
+export const SERVICES = [
+  {
+    id: 'web-dev',
+    title: 'Autonomous Web Systems',
+    desc: 'Building self-healing, local-first web architectures with sub-50ms sync latency.',
+    details: 'Focus on React 19, Node.js, and Distributed Sync Engines.',
+    icon: 'Terminal'
+  },
+  {
+    id: 'ai-arch',
+    title: 'AI Portfolio Architect',
+    desc: 'Designing recursive intelligence loops and OMNI-VISION perception layers.',
+    details: 'Leveraging LLMs, VectorDBs, and Python-based orchestration.',
+    icon: 'Cpu'
+  }
+];
+
+export const SNIPPETS = [
+  {
+    id: 'peor-logic',
+    title: 'Recursive Goal Splitting',
+    desc: 'The core PEOR logic for sub-task decomposition in AI agents.',
+    tags: ['Python', 'AI'],
+    stars: 124,
+    code: 'def peor_loop(objective):\n  tasks = decompose(objective)\n  for t in tasks:\n    perceive(t)\n    evaluate(t)\n    organize(t)\n    respond(t)'
+  },
+  {
+    id: 'sync-cache',
+    title: 'Local-First Sync Hub',
+    desc: 'Optimized delta-patching for high-latency mobile environments.',
+    tags: ['Dart', 'Node.js'],
+    stars: 86,
+    code: 'class SyncEngine {\n  void pushDelta(Patch p) {\n    if (isOffline) cache(p);\n    else commit(p);\n  }\n}'
+  }
+];
