@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Settings, Save, ArrowLeft, Plus, Trash2, Lock, Eye, EyeOff, Edit, Terminal, User, BookOpen, Clock, Code2, Award, Sun, Moon } from 'lucide-react';
+import { Settings, Save, ArrowLeft, Plus, Trash2, Lock, Eye, EyeOff, Edit, Terminal, User, BookOpen, Clock, Code2, Award, Sun, Moon, Database } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   PROJECTS as INITIAL_PROJECTS, BIO as INITIAL_BIO, BLOGS as INITIAL_BLOGS, 
@@ -25,6 +25,8 @@ export default function Admin({ onBack, theme, toggleTheme }) {
   const [experience, setExperience] = useState(INITIAL_EXPERIENCE);
   const [stack, setStack] = useState(INITIAL_STACK);
   const [achievements, setAchievements] = useState(INITIAL_ACHIEVEMENTS);
+  const [services, setServices] = useState(INITIAL_SERVICES);
+  const [snippets, setSnippets] = useState(INITIAL_SNIPPETS);
 
   const [modalData, setModalData] = useState(null); 
 
@@ -36,6 +38,8 @@ export default function Admin({ onBack, theme, toggleTheme }) {
     const sExp = localStorage.getItem('as-os-experience');
     const sStack = localStorage.getItem('as-os-techstack');
     const sAchieve = localStorage.getItem('as-os-achievements');
+    const sServices = localStorage.getItem('as-os-services');
+    const sSnippets = localStorage.getItem('as-os-snippets');
 
     if (sBio) setBio(JSON.parse(sBio));
     if (sProjects) setProjects(JSON.parse(sProjects));
@@ -44,6 +48,8 @@ export default function Admin({ onBack, theme, toggleTheme }) {
     if (sExp) setExperience(JSON.parse(sExp));
     if (sStack) setStack(JSON.parse(sStack));
     if (sAchieve) setAchievements(JSON.parse(sAchieve));
+    if (sServices) setServices(JSON.parse(sServices));
+    if (sSnippets) setSnippets(JSON.parse(sSnippets));
   }, []);
 
   const handleAuth = () => {
@@ -58,7 +64,7 @@ export default function Admin({ onBack, theme, toggleTheme }) {
 
   const handlePurgeData = () => {
     if (window.confirm("WARNING: Erase all local modifications and restore factory defaults?")) {
-      ['as-os-bio', 'as-os-projects', 'as-os-blogs', 'as-os-education', 'as-os-experience', 'as-os-techstack', 'as-os-achievements'].forEach(k => localStorage.removeItem(k));
+      ['as-os-bio', 'as-os-projects', 'as-os-blogs', 'as-os-education', 'as-os-experience', 'as-os-techstack', 'as-os-achievements', 'as-os-services', 'as-os-snippets'].forEach(k => localStorage.removeItem(k));
       setBio(INITIAL_BIO);
       setProjects(INITIAL_PROJECTS);
       setBlogs(INITIAL_BLOGS);
@@ -66,6 +72,8 @@ export default function Admin({ onBack, theme, toggleTheme }) {
       setExperience(INITIAL_EXPERIENCE);
       setStack(INITIAL_STACK);
       setAchievements(INITIAL_ACHIEVEMENTS);
+      setServices(INITIAL_SERVICES);
+      setSnippets(INITIAL_SNIPPETS);
       alert("System restored to factory defaults.");
     }
   };
@@ -110,8 +118,10 @@ export default function Admin({ onBack, theme, toggleTheme }) {
       if (type === 'blog') item = { id: generateId(), title: '', date: new Date().toLocaleDateString(), readTime: '', excerpt: '', content: '' };
       if (type === 'education') item = { id: generateId(), institution: '', degree: '', duration: '', details: '' };
       if (type === 'experience') item = { id: generateId(), role: '', company: '', duration: '', details: '' };
+      if (type === 'service') item = { id: generateId(), title: '', desc: '', details: '', icon: 'Cpu' };
+      if (type === 'snippet') item = { id: generateId(), title: '', desc: '', tags: [], stars: 0, code: '' };
     } else {
-      if ((type === 'education' || type === 'experience') && !item.id) item.id = generateId();
+      if ((type === 'education' || type === 'experience' || type === 'service' || type === 'snippet') && !item.id) item.id = generateId();
     }
     setModalData({ type, data: item });
   };
@@ -138,6 +148,12 @@ export default function Admin({ onBack, theme, toggleTheme }) {
     } else if (type === 'experience') {
       const updated = { ...modalData.data, role: fd.get('role'), company: fd.get('company'), duration: fd.get('duration'), details: fd.get('details') };
       saveData('as-os-experience', experience.some(e => e.id === updated.id) ? experience.map(e => e.id === updated.id ? updated : e) : [...experience, updated], setExperience);
+    } else if (type === 'service') {
+      const updated = { ...modalData.data, title: fd.get('title'), desc: fd.get('desc'), details: fd.get('details'), icon: fd.get('icon') };
+      saveData('as-os-services', services.some(s => s.id === updated.id) ? services.map(s => s.id === updated.id ? updated : s) : [...services, updated], setServices);
+    } else if (type === 'snippet') {
+      const updated = { ...modalData.data, title: fd.get('title'), desc: fd.get('desc'), code: fd.get('code'), stars: Number(fd.get('stars')), tags: fd.get('tags').split(',').map(s=>s.trim()) };
+      saveData('as-os-snippets', snippets.some(s => s.id === updated.id) ? snippets.map(s => s.id === updated.id ? updated : s) : [...snippets, updated], setSnippets);
     }
     setModalData(null);
   };
@@ -148,6 +164,8 @@ export default function Admin({ onBack, theme, toggleTheme }) {
     if (type === 'blog') saveData('as-os-blogs', blogs.filter(b => b.id !== targetId), setBlogs);
     if (type === 'education') saveData('as-os-education', education.filter(e => e.id !== targetId), setEducation);
     if (type === 'experience') saveData('as-os-experience', experience.filter(e => e.id !== targetId), setExperience);
+    if (type === 'service') saveData('as-os-services', services.filter(s => s.id !== targetId), setServices);
+    if (type === 'snippet') saveData('as-os-snippets', snippets.filter(s => s.id !== targetId), setSnippets);
   };
 
   const getSnapshotCode = () => {
@@ -165,9 +183,9 @@ export const ACHIEVEMENTS = ${JSON.stringify(achievements, null, 2)};
 
 export const BLOGS = ${JSON.stringify(blogs, null, 2)};
 
-export const SERVICES = ${JSON.stringify(INITIAL_SERVICES, null, 2)};
+export const SERVICES = ${JSON.stringify(services, null, 2)};
 
-export const SNIPPETS = ${JSON.stringify(INITIAL_SNIPPETS, null, 2)};
+export const SNIPPETS = ${JSON.stringify(snippets, null, 2)};
 `;
   };
 
@@ -212,6 +230,8 @@ export const SNIPPETS = ${JSON.stringify(INITIAL_SNIPPETS, null, 2)};
           <TabButton id="bio" icon={User} label="Identity_Config" />
           <TabButton id="projects" icon={Terminal} label="Mission_Registry" />
           <TabButton id="blogs" icon={BookOpen} label="Intel_Output" />
+          <TabButton id="services" icon={Cpu} label="Service_Core" />
+          <TabButton id="snippets" icon={Code2} label="Protocol_Snippets" />
           
           <h3 className="cyber-label" style={{ margin: '1.5rem 0 1rem' }}>DATA_MODULES</h3>
           <TabButton id="timeline" icon={Clock} label="Resume_Config" />
@@ -335,6 +355,52 @@ export const SNIPPETS = ${JSON.stringify(INITIAL_SNIPPETS, null, 2)};
              </motion.div>
           )}
 
+          {activeTab === 'services' && (
+             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                 <h3 className="cyber-label">Service Core modules</h3>
+                 <button onClick={() => openModal('service')} className="badge-tech" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><Plus size={14} /> NEW_SERVICE</button>
+               </div>
+               <div style={{ display: 'grid', gap: '1rem', marginBottom: '3rem' }}>
+                 {services.map((s) => (
+                   <div key={s.id} className="flex-center" style={{ justifyContent: 'space-between', padding: '1rem', background: 'rgba(255,255,255,0.03)', borderRadius: '8px', border: '1px solid var(--glass-border)' }}>
+                     <div>
+                       <div className="mono" style={{ fontWeight: 700 }}>{s.title}</div>
+                       <div className="mono" style={{ fontSize: '0.7rem', opacity: 0.5 }}>{s.desc}</div>
+                     </div>
+                     <div style={{ display: 'flex', gap: '1rem' }}>
+                       <button onClick={() => openModal('service', s)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--cyber-blue)' }}><Edit size={18} /></button>
+                       <button onClick={() => handleDelete('service', s.id)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#ef4444' }}><Trash2 size={18} /></button>
+                     </div>
+                   </div>
+                 ))}
+               </div>
+             </motion.div>
+          )}
+
+          {activeTab === 'snippets' && (
+             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                 <h3 className="cyber-label">Protocol Snippets</h3>
+                 <button onClick={() => openModal('snippet')} className="badge-tech" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><Plus size={14} /> NEW_SNIPPET</button>
+               </div>
+               <div style={{ display: 'grid', gap: '1rem', marginBottom: '3rem' }}>
+                 {snippets.map((s) => (
+                   <div key={s.id} className="flex-center" style={{ justifyContent: 'space-between', padding: '1rem', background: 'rgba(255,255,255,0.03)', borderRadius: '8px', border: '1px solid var(--glass-border)' }}>
+                     <div>
+                       <div className="mono" style={{ fontWeight: 700 }}>{s.title} <span style={{ color: 'var(--cyber-amber)' }}>({s.stars}⭐)</span></div>
+                       <div className="mono" style={{ fontSize: '0.7rem', opacity: 0.5 }}>{s.tags.join(', ')}</div>
+                     </div>
+                     <div style={{ display: 'flex', gap: '1rem' }}>
+                       <button onClick={() => openModal('snippet', s)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--cyber-blue)' }}><Edit size={18} /></button>
+                       <button onClick={() => handleDelete('snippet', s.id)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#ef4444' }}><Trash2 size={18} /></button>
+                     </div>
+                   </div>
+                 ))}
+               </div>
+             </motion.div>
+          )}
+
           {activeTab === 'stack' && (
              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                <h3 className="cyber-label" style={{ marginBottom: '2rem' }}>Skill Cloud Configuration</h3>
@@ -436,6 +502,23 @@ export const SNIPPETS = ${JSON.stringify(INITIAL_SNIPPETS, null, 2)};
                     <input name="institution" defaultValue={modalData.data.institution} placeholder="Institution" required style={inputStyle} />
                     <input name="duration" defaultValue={modalData.data.duration} placeholder="Duration (e.g. 2024 - 2027)" required style={inputStyle} />
                     <textarea name="details" defaultValue={modalData.data.details} placeholder="Focus Areas / Thesis" rows="4" style={inputStyle} />
+                  </>
+                )}
+                {modalData.type === 'service' && (
+                  <>
+                    <input name="title" defaultValue={modalData.data.title} placeholder="Service Title (e.g. Autonomous Web Systems)" required style={inputStyle} />
+                    <input name="icon" defaultValue={modalData.data.icon} placeholder="Lucide Icon (e.g. Terminal, Cpu)" required style={inputStyle} />
+                    <textarea name="desc" defaultValue={modalData.data.desc} placeholder="Short Description" rows="2" style={inputStyle} />
+                    <textarea name="details" defaultValue={modalData.data.details} placeholder="Focus Areas / Stack Details" rows="3" style={inputStyle} />
+                  </>
+                )}
+                {modalData.type === 'snippet' && (
+                  <>
+                    <input name="title" defaultValue={modalData.data.title} placeholder="Snippet Title" required style={inputStyle} />
+                    <input name="tags" defaultValue={modalData.data.tags?.join(', ')} placeholder="Tags (comma separated)" required style={inputStyle} />
+                    <input name="stars" type="number" defaultValue={modalData.data.stars} placeholder="Stars" required style={inputStyle} />
+                    <textarea name="desc" defaultValue={modalData.data.desc} placeholder="Short Description" rows="2" style={inputStyle} />
+                    <textarea name="code" defaultValue={modalData.data.code} placeholder="Code snippet (raw text)" rows="10" style={inputStyle} />
                   </>
                 )}
                 <button type="submit" className="badge-tech" style={{ width: '100%', padding: '1rem', background: 'var(--cyber-blue)', color: '#000', cursor: 'pointer' }}>SAVE_RECORD</button>

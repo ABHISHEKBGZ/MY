@@ -284,13 +284,22 @@ button.badge-tech:hover {
   }
   
   .responsive-input-group { grid-template-columns: 1fr !important; }
-  nav .flex-center { padding: 0 1rem !important; }
+  nav .flex-center { padding: 0 1rem !important; flex-wrap: wrap; }
+  .mobile-nav-hide { display: none !important; }
   main { padding: 90px 1rem !important; }
   
   .section-margin { margin-bottom: 4rem !important; }
   
   .hero-h1 { font-size: 2.25rem !important; text-align: center; }
+  .hero-h1-hybrid { font-size: 2.5rem !important; }
   
+  /* Timeline responsive */
+  .timeline-h3 { font-size: 1.25rem !important; line-height: 1.5 !important; }
+  
+  /* CTAs responsive */
+  .hero-ctas-container { flex-direction: column !important; width: 100%; }
+  .hero-ctas-container > button { width: 100%; justify-content: center; }
+
   /* Dashboard specific mobile overrides */
   .dashboard-header { flex-direction: column; align-items: flex-start; gap: 1.5rem; padding-bottom: 2rem; }
   .dashboard-header > div { flex-wrap: wrap; width: 100%; justify-content: space-between; }
@@ -304,5 +313,7 @@ button.badge-tech:hover {
      white-space: normal;
      text-align: center;
   }
+  
+  .footer-links-container { flex-direction: column; align-items: center; gap: 1rem !important; }
 }
 

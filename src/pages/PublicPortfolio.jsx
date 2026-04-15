@@ -1,13 +1,36 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { 
-  Globe, Mail, Terminal, Cpu, ArrowRight, ExternalLink, Sun, Moon, Star, Code2, User, FileText, Send
+  Globe, Mail, Terminal, Cpu, ArrowRight, ExternalLink, Sun, Moon, Star, Code2, User, FileText, Send, MessageSquare
 } from 'lucide-react';
-import { PROJECTS, BIO, SERVICES, SNIPPETS, EXPERIENCE, TECH_STACK } from '../data/projects';
+import { PROJECTS as STATIC_PROJECTS, BIO as STATIC_BIO, SERVICES as STATIC_SERVICES, SNIPPETS as STATIC_SNIPPETS, EXPERIENCE as STATIC_EXPERIENCE, TECH_STACK as STATIC_STACK } from '../data/projects';
 
 export default function PublicPortfolio({ theme, toggleTheme }) {
   const navigate = useNavigate();
+
+  const [bio, setBio] = useState(STATIC_BIO);
+  const [projects, setProjects] = useState(STATIC_PROJECTS);
+  const [experience, setExperience] = useState(STATIC_EXPERIENCE);
+  const [stack, setStack] = useState(STATIC_STACK);
+  const [services, setServices] = useState(STATIC_SERVICES);
+  const [snippets, setSnippets] = useState(STATIC_SNIPPETS);
+
+  useEffect(() => {
+    const sBio = localStorage.getItem('as-os-bio');
+    const sProjects = localStorage.getItem('as-os-projects');
+    const sExp = localStorage.getItem('as-os-experience');
+    const sStack = localStorage.getItem('as-os-techstack');
+    const sServices = localStorage.getItem('as-os-services');
+    const sSnippets = localStorage.getItem('as-os-snippets');
+
+    if (sBio) setBio(JSON.parse(sBio));
+    if (sProjects) setProjects(JSON.parse(sProjects));
+    if (sExp) setExperience(JSON.parse(sExp));
+    if (sStack) setStack(JSON.parse(sStack));
+    if (sServices) setServices(JSON.parse(sServices));
+    if (sSnippets) setSnippets(JSON.parse(sSnippets));
+  }, []);
 
   return (
     <div style={{ background: 'var(--bg-deep)', color: 'var(--text-primary)', minHeight: '100vh' }}>
@@ -16,7 +39,7 @@ export default function PublicPortfolio({ theme, toggleTheme }) {
       <nav style={{ position: 'fixed', top: 0, width: '100%', height: '80px', background: 'var(--bg-deep)', borderBottom: '1px solid var(--glass-border)', zIndex: 100 }}>
         <div className="flex-center" style={{ maxWidth: '1200px', margin: '0 auto', height: '100%', justifyContent: 'space-between', padding: '0 2rem' }}>
           <button onClick={() => navigate('/')} className="mono" style={{ background: 'none', border: 'none', color: 'var(--text-primary)', cursor: 'pointer', fontWeight: 800, fontSize: '1.1rem' }}>
-            {BIO.name.split(' ')[0]}
+            {bio.name.split(' ')[0]}
           </button>
           
           <div className="flex-center" style={{ gap: '2.5rem' }}>
@@ -43,15 +66,15 @@ export default function PublicPortfolio({ theme, toggleTheme }) {
                 </div>
              </div>
              
-             <h1 style={{ fontSize: '3.5rem', fontWeight: 800, lineHeight: 1.1, marginBottom: '1.5rem' }}>
+             <h1 className="hero-h1-hybrid" style={{ fontSize: '3.5rem', fontWeight: 800, lineHeight: 1.1, marginBottom: '1.5rem' }}>
                 I do code and make content <span style={{ color: 'var(--cyber-green)' }}>about it!</span>
              </h1>
              <p className="mono" style={{ fontSize: '1.1rem', opacity: 0.6, maxWidth: '700px', margin: '0 auto 3rem', lineHeight: 1.8 }}>
-                I am <span style={{ color: '#fff', fontWeight: 700 }}>{BIO.name}</span>, a CSE student and AI Architect building autonomous systems, 
+                I am <span style={{ color: '#fff', fontWeight: 700 }}>{bio.name}</span>, a CSE student and AI Architect building autonomous systems, 
                 sovereign data layers, and high-performance sync protocols.
              </p>
 
-             <div className="flex-center" style={{ gap: '1.5rem' }}>
+             <div className="flex-center hero-ctas-container" style={{ gap: '1.5rem' }}>
                 <button className="badge-tech" style={{ padding: '1rem 2.5rem', background: 'var(--cyber-green)', color: '#000', fontWeight: 800, borderRadius: '50px', display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
                    GET_IN_TOUCH <Send size={16} />
                 </button>
@@ -73,7 +96,7 @@ export default function PublicPortfolio({ theme, toggleTheme }) {
         <section className="section-margin">
            <h2 className="cyber-label" style={{ marginBottom: '2.5rem' }}>Core_Services</h2>
            <div className="responsive-grid-2">
-              {SERVICES.map((s) => (
+              {services.map((s) => (
                 <div key={s.id} className="card" style={{ padding: '3rem' }}>
                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '2rem' }}>
                       <div className="flex-center" style={{ width: '50px', height: '50px', background: 'rgba(0, 255, 136, 0.05)', borderRadius: '12px' }}>
@@ -94,7 +117,7 @@ export default function PublicPortfolio({ theme, toggleTheme }) {
            <div className="card" style={{ padding: '3rem', borderLeft: '4px solid var(--cyber-blue)' }}>
               <h3 style={{ fontSize: '2rem', marginBottom: '1.5rem' }}>Professional Background & Expertise</h3>
               <p className="mono" style={{ fontSize: '1rem', opacity: 0.8, lineHeight: 1.8, marginBottom: '1.5rem' }}>
-                 {BIO.summary}
+                 {bio.summary}
               </p>
               <p className="mono" style={{ fontSize: '0.95rem', opacity: 0.7, lineHeight: 1.8 }}>
                  As a CSE engineering student, my passion lies in solving complex architectural challenges. Whether it's crafting 
@@ -112,25 +135,25 @@ export default function PublicPortfolio({ theme, toggleTheme }) {
               <div className="card" style={{ padding: '2.5rem' }}>
                  <h3 style={{ fontSize: '1.3rem', marginBottom: '1.5rem', color: 'var(--cyber-blue)' }}>Languages</h3>
                  <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
-                    {TECH_STACK.languages.map(lang => <span key={lang} className="badge-tech">{lang}</span>)}
+                    {stack.languages.map(lang => <span key={lang} className="badge-tech">{lang}</span>)}
                  </div>
               </div>
               <div className="card" style={{ padding: '2.5rem' }}>
                  <h3 style={{ fontSize: '1.3rem', marginBottom: '1.5rem', color: 'var(--cyber-green)' }}>Frameworks</h3>
                  <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
-                    {TECH_STACK.frameworks.map(fw => <span key={fw} className="badge-tech">{fw}</span>)}
+                    {stack.frameworks.map(fw => <span key={fw} className="badge-tech">{fw}</span>)}
                  </div>
               </div>
               <div className="card" style={{ padding: '2.5rem' }}>
                  <h3 style={{ fontSize: '1.3rem', marginBottom: '1.5rem', color: 'var(--cyber-amber)' }}>Tools & Platforms</h3>
                  <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
-                    {TECH_STACK.tools.map(tool => <span key={tool} className="badge-tech">{tool}</span>)}
+                    {stack.tools.map(tool => <span key={tool} className="badge-tech">{tool}</span>)}
                  </div>
               </div>
               <div className="card" style={{ padding: '2.5rem' }}>
                  <h3 style={{ fontSize: '1.3rem', marginBottom: '1.5rem', color: 'var(--cyber-purple)' }}>AI & Machine Learning</h3>
                  <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
-                    {TECH_STACK.ai.map(ai => <span key={ai} className="badge-tech">{ai}</span>)}
+                    {stack.ai.map(ai => <span key={ai} className="badge-tech">{ai}</span>)}
                  </div>
               </div>
            </div>
@@ -146,7 +169,7 @@ export default function PublicPortfolio({ theme, toggleTheme }) {
            </div>
 
            <div style={{ display: 'flex', flexDirection: 'column', gap: '4rem' }}>
-              {PROJECTS.slice(0, 2).map((p) => (
+              {projects.slice(0, 2).map((p) => (
                 <motion.div 
                   key={p.id}
                   whileHover={{ x: 10 }}
@@ -177,7 +200,7 @@ export default function PublicPortfolio({ theme, toggleTheme }) {
         <section className="section-margin">
            <h2 className="cyber-label" style={{ marginBottom: '4rem' }}>Professional_Trajectory</h2>
            <div style={{ position: 'relative', paddingLeft: '3rem', borderLeft: '1px solid var(--glass-border)' }}>
-              {EXPERIENCE?.map((exp, i) => (
+              {experience?.map((exp, i) => (
                  <motion.div 
                    key={i}
                    initial={{ opacity: 0, x: -20 }}
@@ -187,7 +210,7 @@ export default function PublicPortfolio({ theme, toggleTheme }) {
                  >
                     <div style={{ position: 'absolute', left: '-3.4rem', top: '0.5rem', width: '12px', height: '12px', background: 'var(--cyber-green)', borderRadius: '50%', boxShadow: '0 0 15px var(--cyber-green)' }} />
                     <div className="flex-center" style={{ justifyContent: 'space-between', marginBottom: '1rem', flexWrap: 'wrap', gap: '1rem' }}>
-                       <h3 style={{ fontSize: '1.8rem', fontWeight: 800 }}>{exp.role} <span style={{ opacity: 0.3, fontWeight: 400 }}>at</span> <span style={{ color: 'var(--cyber-blue)' }}>{exp.company}</span></h3>
+                       <h3 className="timeline-h3" style={{ fontSize: '1.8rem', fontWeight: 800 }}>{exp.role} <span style={{ opacity: 0.3, fontWeight: 400 }}>at</span> <span style={{ color: 'var(--cyber-blue)' }}>{exp.company}</span></h3>
                        <span className="mono" style={{ fontSize: '0.8rem', opacity: 0.4 }}>{exp.duration}</span>
                     </div>
                     <p className="mono" style={{ fontSize: '0.95rem', opacity: 0.7, lineHeight: 1.8, maxWidth: '800px' }}>
@@ -210,7 +233,7 @@ export default function PublicPortfolio({ theme, toggleTheme }) {
            </div>
            
            <div className="responsive-grid-2">
-              {SNIPPETS.map(snip => (
+              {snippets.map(snip => (
                 <div key={snip.id} className="card" style={{ padding: '2.5rem' }}>
                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.5rem' }}>
                       <div style={{ display: 'flex', gap: '0.5rem' }}>
@@ -236,13 +259,13 @@ export default function PublicPortfolio({ theme, toggleTheme }) {
               <p className="mono" style={{ fontSize: '1rem', opacity: 0.6, marginBottom: '2.5rem' }}>
                  I'm currently open for new opportunities, collaborations, or even just a chat about autonomous architectures.
               </p>
-              <a href={`mailto:${BIO.email}`} style={{ textDecoration: 'none' }}>
+              <a href={`mailto:${bio.email}`} style={{ textDecoration: 'none' }}>
                  <button className="badge-tech" style={{ padding: '1.2rem 3rem', background: 'var(--cyber-blue)', color: '#000', fontWeight: 800, borderRadius: '12px', fontSize: '1rem', display: 'inline-flex', gap: '0.75rem', alignItems: 'center' }}>
                     <Mail size={18} /> INITIATE_CONTACT
                  </button>
               </a>
               <div className="mono" style={{ fontSize: '0.8rem', opacity: 0.4, marginTop: '2rem' }}>
-                 {BIO.email}
+                 {bio.email}
               </div>
            </div>
         </section>
@@ -252,7 +275,7 @@ export default function PublicPortfolio({ theme, toggleTheme }) {
       <footer style={{ padding: '6rem 2rem', borderTop: '1px solid var(--glass-border)', background: 'rgba(0,0,0,0.2)' }}>
          <div className="flex-center" style={{ maxWidth: '1100px', margin: '0 auto', justifyContent: 'space-between', flexWrap: 'wrap', gap: '2rem' }}>
             <div className="mono" style={{ opacity: 0.3, fontSize: '0.7rem' }}>© 2026 SOVEREIGN_IDENTITY // ABHISHEK SINGH</div>
-            <div className="flex-center" style={{ gap: '2rem' }}>
+            <div className="flex-center footer-links-container" style={{ gap: '2rem' }}>
                <button onClick={() => navigate('/os')} className="mono hover-glow" style={{ background: 'none', border: 'none', color: 'var(--text-dim)', fontSize: '0.75rem' }}>OS_DASHBOARD</button>
                <button onClick={() => navigate('/admin')} className="mono hover-glow" style={{ background: 'none', border: 'none', color: 'var(--text-dim)', fontSize: '0.75rem' }}>CMS_ADMIN</button>
                <button onClick={() => navigate('/vault')} className="mono hover-glow" style={{ background: 'none', border: 'none', color: 'var(--text-dim)', fontSize: '0.75rem' }}>ENCRYPTED_VAULT</button>

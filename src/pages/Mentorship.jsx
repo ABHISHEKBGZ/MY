@@ -1,13 +1,20 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { 
   Terminal, Cpu, ArrowLeft, Send, CheckCircle, Zap, Shield, Target, BookOpen, Rocket, Star, Code2, Sun, Moon
 } from 'lucide-react';
-import { BIO } from '../data/projects';
+import { BIO as STATIC_BIO } from '../data/projects';
 
 export default function Mentorship({ theme, toggleTheme }) {
   const navigate = useNavigate();
+  
+  const [bio, setBio] = useState(STATIC_BIO);
+
+  useEffect(() => {
+    const sBio = localStorage.getItem('as-os-bio');
+    if (sBio) setBio(JSON.parse(sBio));
+  }, []);
 
   const levels = [
     { title: 'Phase One', desc: 'Fundamentals of Sovereign Engineering. Architecture, Sync, and Privacy.', cost: 'ENTRY_LEVEL' },
@@ -28,7 +35,7 @@ export default function Mentorship({ theme, toggleTheme }) {
       <nav style={{ position: 'fixed', top: 0, width: '100%', height: '80px', background: 'var(--bg-deep)', borderBottom: '1px solid var(--glass-border)', zIndex: 100 }}>
         <div className="flex-center" style={{ maxWidth: '1200px', margin: '0 auto', height: '100%', justifyContent: 'space-between', padding: '0 2rem' }}>
           <button onClick={() => navigate('/')} className="mono" style={{ background: 'none', border: 'none', color: 'var(--text-primary)', cursor: 'pointer', fontWeight: 800 }}>
-            {BIO.name.split(' ')[0]}
+            {bio.name.split(' ')[0]}
           </button>
           <div className="flex-center" style={{ gap: '2.5rem' }}>
             <div className="mono" style={{ display: 'flex', gap: '2rem', fontSize: '0.75rem' }}>

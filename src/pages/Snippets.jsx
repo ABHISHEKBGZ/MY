@@ -4,13 +4,23 @@ import { useNavigate } from 'react-router-dom';
 import { 
   Terminal, Search, Star, Copy, ExternalLink, ArrowLeft, Sun, Moon, Code2, Globe, Database
 } from 'lucide-react';
-import { BIO, SNIPPETS } from '../data/projects';
+import { BIO as STATIC_BIO, SNIPPETS as STATIC_SNIPPETS } from '../data/projects';
 
 export default function Snippets({ theme, toggleTheme }) {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
+  
+  const [bio, setBio] = useState(STATIC_BIO);
+  const [snippets, setSnippets] = useState(STATIC_SNIPPETS);
 
-  const filteredSnippets = SNIPPETS.filter(s => 
+  useEffect(() => {
+    const sBio = localStorage.getItem('as-os-bio');
+    const sSnippets = localStorage.getItem('as-os-snippets');
+    if (sBio) setBio(JSON.parse(sBio));
+    if (sSnippets) setSnippets(JSON.parse(sSnippets));
+  }, []);
+
+  const filteredSnippets = snippets.filter(s => 
     s.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
     s.tags.some(t => t.toLowerCase().includes(searchTerm.toLowerCase()))
   );
@@ -22,7 +32,7 @@ export default function Snippets({ theme, toggleTheme }) {
       <nav style={{ position: 'fixed', top: 0, width: '100%', height: '80px', background: 'var(--bg-deep)', borderBottom: '1px solid var(--glass-border)', zIndex: 100 }}>
         <div className="flex-center" style={{ maxWidth: '1200px', margin: '0 auto', height: '100%', justifyContent: 'space-between', padding: '0 2rem' }}>
           <button onClick={() => navigate('/')} className="mono" style={{ background: 'none', border: 'none', color: 'var(--text-primary)', cursor: 'pointer', fontWeight: 800 }}>
-            {BIO.name.split(' ')[0]}
+            {bio.name.split(' ')[0]}
           </button>
           <div className="flex-center" style={{ gap: '2.5rem' }}>
             <div className="mono" style={{ display: 'flex', gap: '2rem', fontSize: '0.75rem' }}>
