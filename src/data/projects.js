@@ -36,7 +36,7 @@ export const PROJECTS = [
     fullDesc: 'High-performance sync platform for real-time mobile/web ecosystems with encrypted API handshakes and localized caching.',
     tech: ['Flutter', 'PHP', 'MySQL', 'Node.js'],
     status: 'Public',
-    link: '#',
+    link: 'https://aalayaj.com',
     github: '#'
   }
 ];
