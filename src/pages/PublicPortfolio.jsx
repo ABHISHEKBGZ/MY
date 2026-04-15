@@ -62,7 +62,7 @@ export default function PublicPortfolio({ onAccessOS, theme, toggleTheme }) {
 
       {/* PROFESSIONAL NAVBAR */}
       <nav style={{ position: 'fixed', top: 0, width: '100%', height: '70px', background: 'var(--bg-card)', backdropFilter: 'blur(16px)', zIndex: 100, borderBottom: '1px solid var(--glass-border)' }}>
-        <div className="flex-center" style={{ maxWidth: '1200px', margin: '0 auto', height: '100%', justifyContent: 'space-between', padding: '0 2rem' }}>
+        <div className="flex-center" style={{ maxWidth: '1200px', margin: '0 auto', height: '100%', justifyContent: 'space-between', padding: '0 1rem' }}>
           <div className="mono" style={{ fontWeight: 800, letterSpacing: '2px', color: 'var(--text-primary)' }}>{bio.name.toUpperCase()}</div>
           <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
             <button 
@@ -83,17 +83,17 @@ export default function PublicPortfolio({ onAccessOS, theme, toggleTheme }) {
         
         {/* HERO SECTION - REFINED */}
         <section className="responsive-grid-2" style={{ alignItems: 'center', marginBottom: '12rem' }}>
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} style={{ textAlign: 'inherit' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem', justifyContent: 'inherit' }}>
                 <span className="cyber-label" style={{ margin: 0 }}>Strategic Engineering // 2026</span>
                 <div style={{ width: '40px', height: '1px', background: 'var(--cyber-blue)', opacity: 0.3 }} />
                 <span className="mono" style={{ fontSize: '0.6rem', opacity: 0.5 }}>OS_BUILD_8.2.0</span>
             </div>
-            <h1 className="text-gradient hero-h1" style={{ fontSize: '4.5rem', fontWeight: 800, lineHeight: 1.1, margin: '1rem 0' }}>{bio.role}</h1>
+            <h1 className="text-gradient hero-h1" style={{ fontWeight: 800, lineHeight: 1.1, margin: '1rem 0' }}>{bio.role}</h1>
             <p className="mono" style={{ fontSize: '1.1rem', opacity: 0.7, lineHeight: 1.6, marginBottom: '2.5rem', maxWidth: '550px' }}>
               {bio.summary}
             </p>
-            <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center', justifyContent: 'inherit' }}>
+            <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center', justifyContent: 'inherit', flexWrap: 'wrap' }}>
               <a href={bio.resumeUrl} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
                 <button className="badge-tech" style={{ background: 'var(--cyber-blue)', color: '#000', border: 'none', padding: '0.85rem 1.75rem', display: 'flex', alignItems: 'center', gap: '0.75rem', cursor: 'pointer', fontWeight: 700 }}>
                   <FileText size={16} /> VIEW_INTEL_SNAPSHOT
@@ -106,8 +106,8 @@ export default function PublicPortfolio({ onAccessOS, theme, toggleTheme }) {
               </div>
             </div>
           </motion.div>
-          <div style={{ width: '100%', height: '500px', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
-             <div style={{ position: 'absolute', width: '300px', height: '300px', background: 'var(--cyber-blue)', filter: 'blur(100px)', opacity: 0.1, zIndex: 0 }} />
+          <div className="flex-center" style={{ width: '100%', minHeight: '300px', height: 'auto', position: 'relative', marginTop: '2rem' }}>
+             <div style={{ position: 'absolute', width: '200px', height: '200px', background: 'var(--cyber-blue)', filter: 'blur(100px)', opacity: 0.1, zIndex: 0 }} />
              <IsoCard />
           </div>
         </section>
@@ -115,7 +115,8 @@ export default function PublicPortfolio({ onAccessOS, theme, toggleTheme }) {
         {/* STRATEGIC ARCHITECTURE / ENGINEERING DNA */}
         <motion.section 
           initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} 
-          style={{ marginBottom: '12rem', display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '2rem' }}
+          className="responsive-grid-3-to-1"
+          style={{ marginBottom: '12rem' }}
         >
           <div className="card" style={{ borderTop: '2px solid var(--cyber-blue)' }}>
             <Cpu size={20} color="var(--cyber-blue)" style={{ marginBottom: '1rem' }} />

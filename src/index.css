@@ -63,8 +63,10 @@ body {
 
 /* Responsive Layout Utilities */
 .responsive-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; }
+.responsive-grid-3-to-1 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
 .responsive-grid-sidebar { display: grid; grid-template-columns: minmax(0, 1fr) 400px; gap: 6rem; }
 .responsive-input-group { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+.responsive-metrics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
 
 /* Scrollbar */
 ::-webkit-scrollbar { width: 4px; }
@@ -262,25 +264,28 @@ button.badge-tech:hover {
 }
 
 @media (max-width: 768px) {
-  .bento-grid { flex-direction: column; display: flex; gap: 1rem; }
-  .card { width: 100%; padding: 1.5rem !important; }
-  .responsive-grid-2, .responsive-grid-sidebar { grid-template-columns: 1fr !important; gap: 2rem !important; }
+  .bento-grid { flex-direction: column; display: flex; gap: 1.25rem; }
+  .bento-grid > * { width: 100% !important; grid-column: span 12 !important; height: auto !important; min-height: fit-content; }
+  
+  .card { width: 100%; padding: 1.25rem !important; }
+  
+  .responsive-grid-2, .responsive-grid-sidebar, .responsive-grid-3-to-1, .responsive-metrics-grid { 
+    grid-template-columns: 1fr !important; 
+    gap: 1.5rem !important; 
+  }
+  
   .responsive-input-group { grid-template-columns: 1fr !important; }
   nav .flex-center { padding: 0 1rem !important; }
   main { padding: 90px 1rem !important; }
-  .hero-h1 { font-size: 2.5rem !important; text-align: center; }
-  .hero-card { grid-column: span 1 !important; }
   
-  /* Admin Forms & Dashboards (Mobile Support) */
-  .dashboard-header { flex-direction: column; align-items: flex-start; gap: 2rem; }
+  .hero-h1 { font-size: 2.25rem !important; text-align: center; }
+  
+  /* Dashboard specific mobile overrides */
+  .dashboard-header { flex-direction: column; align-items: flex-start; gap: 1.5rem; padding-bottom: 2rem; }
   .dashboard-header > div { flex-wrap: wrap; width: 100%; justify-content: space-between; }
+  
   .admin-form-grid, .dashboard-hero-grid { grid-template-columns: 1fr !important; gap: 1rem; }
-  
-  /* Sidebar padding drop */
-  .dashboard-container { padding: 1rem !important; }
-  
-  /* Modal responsive override */
-  .modal-container { padding: 1rem !important; }
+  .dashboard-container { padding: 0.75rem !important; }
   
   .badge-tech {
      font-size: 0.7rem !important;

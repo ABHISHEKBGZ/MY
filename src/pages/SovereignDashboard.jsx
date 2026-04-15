@@ -87,7 +87,7 @@ export default function SovereignDashboard({ onBack, theme, toggleTheme }) {
           </div>
         </div>
         
-        <div className="mono" style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+        <div className="mono" style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
           <button 
             onClick={toggleTheme} 
             className="badge-tech" 
@@ -95,7 +95,7 @@ export default function SovereignDashboard({ onBack, theme, toggleTheme }) {
           >
             {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
           </button>
-          <div style={{ textAlign: 'right' }}>
+          <div style={{ textAlign: 'right', minWidth: '80px' }}>
             <div style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--cyber-blue)' }}>{time}</div>
             <div style={{ fontSize: '0.6rem', opacity: 0.6 }}>SYSTEM_CLOCK // LOCAL</div>
           </div>
@@ -143,7 +143,7 @@ export default function SovereignDashboard({ onBack, theme, toggleTheme }) {
         </motion.div>
 
         {/* METRICS */}
-        <div style={{ gridColumn: 'span 4', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+        <div className="responsive-metrics-grid" style={{ gridColumn: 'span 4' }}>
           <Metric label="CPU_LOAD" value={systemLoad.toFixed(1)} unit="%" icon={Cpu} color="var(--cyber-blue)" trend={systemLoad > 50 ? "+2.4%" : "-1.1%"} />
           <Metric label="MEM_USAGE" value={(systemLoad * 0.72 + 20).toFixed(1)} unit="GB" icon={Server} color="var(--cyber-amber)" />
           <Metric label="UPLINK" value={isOnline ? 'LIVE' : 'OFF'} unit="" icon={isOnline ? Zap : CloudOff} color={isOnline ? 'var(--cyber-green)' : '#ef4444'} />
@@ -164,8 +164,8 @@ export default function SovereignDashboard({ onBack, theme, toggleTheme }) {
         </motion.div>
 
         {/* EXTERNAL PERIPHERAL ACTIONS */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="card" style={{ gridColumn: 'span 12', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'var(--bg-card)' }}>
-          <div className="mono" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="card" style={{ gridColumn: 'span 12', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'var(--bg-card)', flexWrap: 'wrap', gap: '1.5rem' }}>
+          <div className="mono" style={{ display: 'flex', alignItems: 'center', gap: '1rem', minWidth: '250px' }}>
             <div style={{ width: '40px', height: '40px', background: 'rgba(14,165,233,0.1)', borderRadius: '8px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
               <QrCode size={20} color="var(--cyber-blue)" />
             </div>
@@ -174,7 +174,7 @@ export default function SovereignDashboard({ onBack, theme, toggleTheme }) {
               <div style={{ fontSize: '0.8rem', opacity: 0.6, marginTop: '0.25rem' }}>Scan encrypted token to bridge desktop session to mobile array.</div>
             </div>
           </div>
-          <button className="badge-tech" onClick={() => setShowScanner(!showScanner)} style={{ background: showScanner ? 'var(--cyber-amber)' : 'var(--cyber-blue)', color: '#000', display: 'flex', alignItems: 'center', gap: '0.5rem', border: 'none', cursor: 'pointer' }}>
+          <button className="badge-tech" onClick={() => setShowScanner(!showScanner)} style={{ background: showScanner ? 'var(--cyber-amber)' : 'var(--cyber-blue)', color: '#000', display: 'flex', alignItems: 'center', gap: '0.5rem', border: 'none', cursor: 'pointer', minWidth: '150px', justifyContent: 'center' }}>
             <Activity size={16} /> {showScanner ? 'HALT_SCAN' : 'INITIATE_BRIDGE'}
           </button>
         </motion.div>
