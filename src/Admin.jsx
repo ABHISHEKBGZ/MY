@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Settings, Save, ArrowLeft, Plus, Trash2, Lock, Eye, EyeOff, Edit, Terminal, User, BookOpen, Clock, Code2, Award, Sun, Moon, Database } from 'lucide-react';
+import { Settings, Save, ArrowLeft, Plus, Trash2, Lock, Eye, EyeOff, Edit, Terminal, User, BookOpen, Clock, Code2, Award, Sun, Moon, Database, Cpu } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   PROJECTS as INITIAL_PROJECTS, BIO as INITIAL_BIO, BLOGS as INITIAL_BLOGS, 
